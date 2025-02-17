@@ -44,7 +44,6 @@ public class DeliveryCalculatorTest {
     @DisplayName("Проверяет правильность расчетов стоимости доставки")
     @MethodSource("validDeliveryData")
     void priceDeliveryTest(int distance, CargoDimension cargo, boolean fragile, ServiceWorkload rate, double expectedCost) {
-
         Delivery delivery = new Delivery(distance, cargo, fragile, rate);
 
         double actualCost = delivery.calculateDeliveryCost();
@@ -81,12 +80,4 @@ public class DeliveryCalculatorTest {
         double actualPrice = delivery.calculateDeliveryCost();
         assertEquals(expectedPrice, actualPrice);
     }
-
-
-
-
-
-
-
-
 }
