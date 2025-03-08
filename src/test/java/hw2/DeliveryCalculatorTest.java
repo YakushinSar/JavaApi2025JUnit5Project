@@ -10,10 +10,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeliveryCalculatorTest {
+
+    @Test
+    @Tag("Позитивный тест")
+    void cheapestOrderTest() {
+        Delivery delivery = new Delivery(1, CargoDimension.SMALL, false, ServiceWorkload.NORMAL);
+        assertEquals(400, delivery.calculateDeliveryCost());
+    }
+
     @Test
     @Tag("Позитивный тест")
     @DisplayName("Большой размер груза")
@@ -79,5 +86,16 @@ public class DeliveryCalculatorTest {
         Delivery delivery = new Delivery(distance, cargoDimension, isFragile, serviceWorkload);
         double actualPrice = delivery.calculateDeliveryCost();
         assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    @Tag("Negative")
+    void test31KmDistanceFragileOrderCost() {
+        Delivery delivery = new Delivery(35, CargoDimension.SMALL, true, ServiceWorkload.NORMAL);
+        Throwable exception = assertThrows(
+                UnsupportedOperationException.class,
+                delivery::calculateDeliveryCost
+        );
+        assertEquals("Хрупкий груз не может быть доставлен на расстояние более 30 км", exception.getMessage());
     }
 }
