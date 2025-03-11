@@ -2,6 +2,7 @@ package hw4;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -33,6 +34,7 @@ class BonigarciaTest {
         driver = new ChromeDriver();
         driver.get(URL);
         driver.manage().window().setSize(new Dimension(1920, 1080));
+
     }
 
     @AfterEach
@@ -159,5 +161,20 @@ class BonigarciaTest {
 
             driver.navigate().back();
         }
+    }
+
+    @ParameterizedTest
+    @DisplayName("Проверка фреймов")
+    @CsvSource ({
+            "Chapter 4. Browser-Agnostic Features, frames.html, Frames"
+    })
+    void frameTests (String chapterName, String path, String title) {
+        driver.findElement(By.xpath("//h5[text() = '" + chapterName + "']/../a[@href = '" + path + "']")).click();
+        String actualUrl = driver.getCurrentUrl();
+        WebElement frame = driver.findElement(By.cssSelector("frame[name='frame-header']"));
+        driver.switchTo().frame(frame);
+        String actualTitle = driver.findElement(By.className("display-6")).getText();
+        assertEquals(URL + path, actualUrl, "The URLs don't match");
+        assertEquals(title, actualTitle, "The titles don't match");
     }
 }
