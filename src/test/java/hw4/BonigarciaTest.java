@@ -3,11 +3,16 @@ package hw4;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -112,4 +117,47 @@ class BonigarciaTest {
         assertEquals("Random calculator", calculatorTitle.getText());
     }
 
+    // Проверка, что загрузилось 6 Chapter
+    @Test
+    public void testAllChapter() {
+        List<WebElement> list = driver.findElements(By.xpath("//div[@class='card-body']"));
+
+        assertEquals(list.size(), 6);
+    }
+
+    // Проверка каждой ссылки в каждом Chapter
+    @Test()
+    public void testChapterAllLink() {
+        List<WebElement> webElementList = driver.findElements(By.xpath("//div[@class='card-body']/a"));
+
+        for (WebElement element : webElementList) {
+            String link = element.getDomAttribute("href");
+            String title = element.getText();
+
+            // Title кнопки не соответствует Title страницы
+            switch (link) {
+                case "navigation1.html" -> title = "Navigation example";
+                case "draw-in-canvas.html" -> title = "Drawing in canvas";
+                case "long-page.html" -> title = "This is a long page";
+                case "iframes.html" -> title = "IFrame";
+                case "login-slow.html" -> title = "Slow login form";
+            }
+            element.click();
+
+            String resultUrl = driver.getCurrentUrl();
+
+            //Страницы без Title
+            if (link.equals("frames.html") || link.equals("multilanguage.html")) {
+                assertEquals(resultUrl, URL + link);
+                driver.navigate().back();
+                continue;
+            }
+            String resultTitle = driver.findElement(By.xpath("//h1[@class='display-6']")).getText();
+
+            assertEquals(resultUrl, URL + link);
+            assertEquals(resultTitle, title);
+
+            driver.navigate().back();
+        }
+    }
 }
