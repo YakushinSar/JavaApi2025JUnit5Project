@@ -177,4 +177,23 @@ class BonigarciaTest {
         assertEquals(URL + path, actualUrl, "The URLs don't match");
         assertEquals(title, actualTitle, "The titles don't match");
     }
+
+    @Test
+    void openAllLinksTest() throws InterruptedException {
+        int qtyLinks = 0;
+        List<WebElement> chapters = driver.findElements(By.cssSelector("h5.card-title"));
+        for (WebElement chapter : chapters) {
+            List<WebElement> links = chapter.findElements(By.xpath("./../a"));
+            qtyLinks += links.size();
+            System.out.println(chapter.getText());
+            for (WebElement link : links) {
+                System.out.println(link.getText());
+                link.click();
+                Thread.sleep(500);
+                driver.navigate().back();
+            }
+        }
+        assertEquals(6, chapters.size());
+        assertEquals(27, qtyLinks);
+    }
 }
