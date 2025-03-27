@@ -22,4 +22,8 @@ public class Hw5 {
     private static final By COLOR_PICKER = By.xpath("//input[@name=\"my-colors\"]");
     private static final By DATE_PICKER = By.xpath("//input[@name=\"my-date\"]");
     private static final By EXAMPLE_RANGE = By.xpath("//input[@name=\"my-range\"]");
+
+    
+
+
 }
