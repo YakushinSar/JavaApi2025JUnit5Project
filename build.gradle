@@ -18,6 +18,9 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.25.3'
     implementation 'commons-io:commons-io:2.16.0'
     testImplementation 'org.aeonbits.owner:owner:1.0.12'
+    implementation 'com.codeborne:selenide:7.9.1'
+    implementation 'io.qameta.allure:allure-rest-assured:2.27.0'
+
 }
 
 test {
